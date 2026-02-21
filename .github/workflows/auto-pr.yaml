@@ -34,7 +34,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          #token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           branch: ${{ env.NEW_BRANCH }}
           title: "Auto PR for ${{ env.NEW_BRANCH }}"
