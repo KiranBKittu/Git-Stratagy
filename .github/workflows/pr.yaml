@@ -13,10 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        run: ls -l
+
       - name: Create change
         run: |
           echo "Build $GITHUB_RUN_ID" >> file1.txt
+          ls -l
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
