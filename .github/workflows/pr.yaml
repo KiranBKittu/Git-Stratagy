@@ -17,7 +17,6 @@ jobs:
       - name: Create change
         run: |
           echo "Build $GITHUB_RUN_ID" >> file1.txt
-          ls -l
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
