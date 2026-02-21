@@ -16,6 +16,8 @@ jobs:
           git config user.email "kiran.bandi786@gmail.com"
       - name: Create branch
         run: |
+          NEW_BRANCH="release-${GITHUB_SHA::7}"
+          echo "NEW_BRANCH=$NEW_BRANCH" >> $GITHUB_ENV
           git checkout -b $NEW_BRANCH
 
       - name: Make change
