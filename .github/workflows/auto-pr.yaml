@@ -19,13 +19,15 @@ jobs:
 
       - name: Prepare release branch
         run: |
-          RELEASE_BRANCH="release-${GITHUB_SHA::7}"
+          RELEASE_BRANCH="release"
           echo "RELEASE_BRANCH=$RELEASE_BRANCH" >> $GITHUB_ENV
+
           git fetch origin
 
           if git ls-remote --exit-code --heads origin $RELEASE_BRANCH; then
             echo "Branch exists → checkout"
             git checkout $RELEASE_BRANCH
+            git pull origin $RELEASE_BRANCH
           else
             echo "Creating new branch"
             git checkout -b $RELEASE_BRANCH
@@ -35,7 +37,7 @@ jobs:
         run: |
           echo "Build: $GITHUB_RUN_ID" >> file1.txt
           git add file1.txt
-          git commit -m "Update file to create diff" || echo "No change"
+          git commit -m "Update file to create diff"
 
       - name: Push branch
         run: |
@@ -47,4 +49,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           branch: ${{ env.RELEASE_BRANCH }}
-          title: "Release PR ${{ env.RELEASE_BRANCH }}"
+          title: "Release PR"
