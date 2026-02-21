@@ -23,9 +23,9 @@ jobs:
 
       - name: Make changes
         run: |
-          echo "Build from commit ${GITHUB_SHA}" >> version.txt
+          echo "Build timestamp: $(date)" >> version.txt
           git add version.txt
-          git commit -m "Auto update version file"
+          git commit -m "Auto change to trigger PR"
 
       - name: Push new branch
         run: |
