@@ -1,63 +1,4 @@
-# name: Auto Branch and PR
-# on:
-#   push:
-#     branches:
-#       - main
-# jobs:
-#   create-branch-and-pr:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-
-#       - name: Configure Git
-#         run: |
-#           git config user.name "KiranBkittu"
-#           git config user.email "kiran.bandi786@gmail.com"
-#       - name: Create branch
-#         run: |
-#           NEW_BRANCH="release-${GITHUB_SHA::7}"
-#           echo "NEW_BRANCH=$NEW_BRANCH" >> $GITHUB_ENV
-#           git checkout -b $NEW_BRANCH
-
-#       - name: Make change
-#         run: |
-#           echo "Run ID: $GITHUB_RUN_ID" >> version.txt
-
-#       - name: Commit
-#         run: |
-#           git add version.txt
-#           git commit -m "Automation update"
-
-#       - name: Push
-#         run: git push origin $NEW_BRANCH
-
-#       # - name: Create new branch with commit id
-#       #   run: |
-#       #     NEW_BRANCH="release-${GITHUB_SHA::7}"
-#       #     echo "NEW_BRANCH=$NEW_BRANCH" >> $GITHUB_ENV
-#       #     git checkout -b $NEW_BRANCH
-
-#       # - name: Make changes
-#       #   run: |
-#       #     echo "Build timestamp: $(date)" >> version.txt
-#       #     git add version.txt
-#       #     git commit -m "Auto change to trigger PR"
-
-#       # - name: Push new branch
-#       #   run: |
-#       #     git push origin $NEW_BRANCH
-
-#       - name: Create Pull Request
-#         uses: peter-evans/create-pull-request@v6
-#         with:
-#           # token: ${{ secrets.GITHUB_TOKEN }}
-#           base: main
-#           branch: ${{ env.NEW_BRANCH }}
-#           title: "Auto PR for ${{ env.NEW_BRANCH }}"
-#           body: "This PR was automatically created by GitHub Actions."
-
-name: Branch + File Change + PR
+name: Release Branch Automation
 on:
   push:
     branches:
@@ -80,7 +21,6 @@ jobs:
         run: |
           RELEASE_BRANCH="release-${GITHUB_SHA::7}"
           echo "RELEASE_BRANCH=$RELEASE_BRANCH" >> $GITHUB_ENV
-
           git fetch origin
 
           if git ls-remote --exit-code --heads origin $RELEASE_BRANCH; then
