@@ -76,26 +76,35 @@ jobs:
           git config user.name "KiranBkittu"
           git config user.email "kiran.bandi786@gmail.com"
 
-      - name: Create new branch
+      - name: Prepare release branch
         run: |
-          NEW_BRANCH="feature-${GITHUB_RUN_ID}"
-          echo "NEW_BRANCH=$NEW_BRANCH" >> $GITHUB_ENV
-          git checkout -b $NEW_BRANCH
+          RELEASE_BRANCH="release-${GITHUB_SHA::7}"
+          echo "RELEASE_BRANCH=$RELEASE_BRANCH" >> $GITHUB_ENV
 
-      - name: Create file with text
+          git fetch origin
+
+          if git ls-remote --exit-code --heads origin $RELEASE_BRANCH; then
+            echo "Branch exists → checkout"
+            git checkout $RELEASE_BRANCH
+          else
+            echo "Creating new branch"
+            git checkout -b $RELEASE_BRANCH
+          fi
+
+      - name: Make guaranteed change
         run: |
-          echo "Hello from GitHub Actions run $GITHUB_RUN_ID" > file1.txt
+          echo "Build: $GITHUB_RUN_ID" >> file1.txt
           git add file1.txt
-          git commit -m "Add file1.txt"
+          git commit -m "Update file to create diff" || echo "No change"
 
       - name: Push branch
         run: |
-          git push origin $NEW_BRANCH
+          git push origin $RELEASE_BRANCH --force
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          branch: ${{ env.NEW_BRANCH }}
-          title: "Auto PR - ${{ env.NEW_BRANCH }}"
+          branch: ${{ env.RELEASE_BRANCH }}
+          title: "Release PR ${{ env.RELEASE_BRANCH }}"
