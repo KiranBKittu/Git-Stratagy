@@ -1,0 +1,16 @@
+name: Capture Merge Commit
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  show-merge-sha:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Merge Commit SHA
+        run: |
+          echo "Merged Commit SHA:"
+          echo "${{ github.event.pull_request.merge_commit_sha }}"
